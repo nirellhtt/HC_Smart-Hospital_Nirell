@@ -1,9 +1,16 @@
 #Importing Libraries
-
+import streamlit as st
+import pandas as pd
+import numpy as np
+import pickle
+import os
 
 #Page Title
 
+set.page_config(page_title = "Smart Hospital Patient Navigator", page_icon = "🏥", layout = "wide")
+
 #HTML and CSS
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -34,7 +41,24 @@ div[data-testid="stCheckbox"] label {
 
 
 @st.cache_resource
+
 #Load the Model
+
+def load_model():
+    with open('hospital_model.pkl', 'rb') as f:
+        return pickle.load(f)
+
+bundle        = load_model()
+model         = bundle['model']
+scaler        = bundle['scaler']
+features      = bundle['features']
+cols_to_scale = bundle['cols_to_scale']
+dept_map_inv  = bundle['dept_map_inv']
+gender_map    = bundle['gender_map']
+temp_map      = bundle['temp_map']
+hr_map        = bundle['hr_map']
+dur_map       = bundle['dur_map']
+cc_map        = bundle['cc_map']
 
 DEPT_INFO = {
     'Respiratory Medicine': {
@@ -70,6 +94,7 @@ DEPT_INFO = {
 }
 
 # ── Hero Header ───────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1a56db 60%,#0ea5e9 100%);
             padding:3rem 2rem 2.5rem;margin:-1rem -1rem 2rem;text-align:center;">
@@ -88,9 +113,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Form ──────────────────────────────────────────────────────────────────────
+
 with st.form("triage_form"):
 
     # Section 1 — Symptoms
+    
     st.markdown("""
     <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:14px;
                 padding:20px 24px;margin-bottom:20px;">
@@ -124,6 +151,7 @@ with st.form("triage_form"):
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Section 2 — Duration & Complaint
+    
     st.markdown("""
     <div style="background:#fdf4ff;border:1px solid #e9d5ff;border-radius:14px;
                 padding:20px 24px;margin-bottom:20px;">
@@ -144,6 +172,7 @@ with st.form("triage_form"):
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Section 3 — Severity
+    
     st.markdown("""
     <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;
                 padding:20px 24px;margin-bottom:20px;">
@@ -164,6 +193,7 @@ with st.form("triage_form"):
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Section 4 — Medical History
+                                        
     st.markdown("""
     <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;
                 padding:20px 24px;margin-bottom:20px;">
