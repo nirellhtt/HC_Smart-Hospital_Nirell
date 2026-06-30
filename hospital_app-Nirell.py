@@ -241,7 +241,7 @@ with st.form("triage_form"):
             'gender'             : gender_map.get(gender,0),
             'fever'              : int(fever),
             'cough'              : int(cough),
-            'headache'           : int(headache)
+            'headache'           : int(headache),
             'chest_pain'         : int(chest_pain),
             'stomach_pain'       : int(stomach_pain),
             'shortness_breath'   : int(shortness_breath),
@@ -256,7 +256,16 @@ with st.form("triage_form"):
             'heart_disease'      : int(heart_disease),
             'chief_complaint'    : cc_map.get(chief_complaint,9)
         }])
-            
+
+    patient_scaled = patient.copy()
+    patient_scaled[cols_to_scale] = scaler.transform(patient[cols_to_scale])
+
+    pred         = model.predict(patient_scaled[features])[0]
+    proba        = model.predict_proba(patient_scaled[features])[0]
+    dept_name    = dept_map_inv[pred]
+    confidence   = proba[pred] *100
+    info         = DEPT_INFO[dept_name]
+    
     st.markdown("---")
     st.markdown("""
     <div style="font-size:22px;font-weight:700;color:#111827;margin-bottom:4px;">AI Recommendation</div>
