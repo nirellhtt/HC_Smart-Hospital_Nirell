@@ -263,7 +263,7 @@ with st.form("triage_form"):
     pred         = model.predict(patient_scaled[features])[0]
     proba        = model.predict_proba(patient_scaled[features])[0]
     dept_name    = dept_map_inv[pred]
-    confidence   = proba[pred] *100
+    confidence   = proba[pred] * 100
     info         = DEPT_INFO[dept_name]
     
     st.markdown("---")
