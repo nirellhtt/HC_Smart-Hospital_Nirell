@@ -7,7 +7,7 @@ import os
 
 #Page Title
 
-st.set.page_config(page_title = "Smart Hospital Patient Navigator", page_icon = "🏥", layout = "wide")
+st.set_page_config(page_title = "Smart Hospital Patient Navigator", page_icon = "🏥", layout = "wide")
 
 #HTML and CSS
 
